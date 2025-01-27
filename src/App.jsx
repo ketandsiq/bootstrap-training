@@ -181,16 +181,11 @@ const data = [
   },
 ];
 const App = () => {
-  const handleClickEvent = (index) => {
+  const [index, setIndex] = useState(0);
+  const handleClickEvent = (indx) => {
     setShow(!show);
-    console.log(index);
-    {
-      show && (
-        <Overlay target={target.current} show={show}>
-          <ImageCarousel data={data} />
-        </Overlay>
-      );
-    }
+    console.log(indx);
+    setIndex(indx)
   };
   const [show, setShow] = useState(false);
 
@@ -199,6 +194,11 @@ const App = () => {
   return (
     <>
       <Container>
+        {show && (
+          <Overlay target={target.current} show={show}>
+            <ImageCarousel data={data} idx={index} />
+          </Overlay>
+        )}
         <Row className="g-0 justify-content-center">
           <Col xs={8}>
             <Gallery
@@ -209,23 +209,6 @@ const App = () => {
               enableImageSelection={false}
             />
           </Col>
-          {/* {data.map((image, index) => (
-            <div
-              key={index}
-              className="p-0 col-xs-4"
-              style={{ width: "33.33%", height: "", overflow: "hidden" }}
-            >
-              <img
-                ref={target}
-                onClick={handleClick}
-                id={"image" + index || " "}
-                src={image["src"]}
-                alt={`image-${index}`}
-                className="img-fluid"
-                style={{ objectFit: "contain" }}
-              />
-            </div>
-          ))} */}
         </Row>
       </Container>
     </>
