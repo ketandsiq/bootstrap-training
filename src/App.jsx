@@ -3,7 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 // import * as React from "react";
 
 // import { data } from "./ch-weather-data.js";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Overlay, Row } from "react-bootstrap";
+import ImageCarousel from "./components/ImageCarousel";
+import { useRef, useState } from "react";
 
 // console.log(data);
 const data = [
@@ -38,24 +40,29 @@ const data = [
       "https://images.pexels.com/photos/6691721/pexels-photo-6691721.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
-    description: "Girl Sitting on Chair",
+    description: "Lady with a Teddy",
     "image-url":
-      "https://images.pexels.com/photos/6691721/pexels-photo-6691721.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/29937530/pexels-photo-29937530/free-photo-of-stunning-northern-lights-over-british-columbia.jpeg",
   },
   {
-    description: "Girl Sitting on Chair",
+    description: "Girl with camera",
     "image-url":
-      "https://images.pexels.com/photos/6691721/pexels-photo-6691721.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/30254787/pexels-photo-30254787/free-photo-of-cozy-coffee-setup-with-plants-and-books.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
-    description: "Girl Sitting on Chair",
+    description: "Beautiful Girl with Glasses",
     "image-url":
-      "https://images.pexels.com/photos/6691721/pexels-photo-6691721.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/30305131/pexels-photo-30305131/free-photo-of-colorful-hindu-temple-at-batu-caves-malaysia.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
-    description: "Girl Sitting on Chair",
+    description: "Redhead with frackles",
     "image-url":
-      "https://images.pexels.com/photos/6691721/pexels-photo-6691721.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      "https://images.pexels.com/photos/16762023/pexels-photo-16762023/free-photo-of-village-with-church-in-mountains.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  },
+  {
+    description: "Girl in black dress",
+    "image-url":
+      "https://images.pexels.com/photos/9943963/pexels-photo-9943963.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     description: "Girl Sitting on Chair",
@@ -64,45 +71,44 @@ const data = [
   },
 ];
 const App = () => {
-  const chunkArray = (array, size) => {
-    const result = [];
-    for (let i = 0; i < array.length; i += size) {
-      result.push(array.slice(i, i + size));
-    }
-    return result;
-  };
+  // const handleClickEvent = (event) => {
 
-  // Split images into groups of 3
-  const imageChunks = chunkArray(data, 3);
-  console.log(imageChunks);
+  //   <ImageCarousel data={data}/>;
+  // };
+  const [show, setShow] = useState(false);
 
-  const handleClickEvent = (event) => {
-    const imgSrc = event.target.src;
-    alert(`Image clicked: ${imgSrc}`);
+  const target = useRef(null);
+  const handleClick = () => {
+    setShow(!show);
+
   };
 
   return (
-    <Container as={Row}>
-      {imageChunks.map((chunk, rowIndex) => (
-        <Row key={rowIndex} className="h-100">
-          {chunk.map((image, colIndex) => (
-            <Col xs={4} key={colIndex} className="g-2">
-              <img
-                onClick={(e) => handleClickEvent(e)}
-                id={"image" + rowIndex + colIndex || " "}
+    <>
+      <Overlay target={target.current} show={show} placement="center">
+        <ImageCarousel data={data} />
+      </Overlay>
+
+      <Container >
+        <Row className="g-0">
+          {data.map((image, index) => (
+            <Col xs={4} key={index} className="g-0">
+              <img 
+                ref={target}
+                onClick={handleClick}
+                id={"image" + index || " "}
                 src={image["image-url"]}
-                alt={`image-${rowIndex}-${colIndex}`}
+                alt={`image-${index}`}
                 style={{
                   width: "100%",
-                  height: "100%",
                   objectFit: "contain",
                 }}
               />
             </Col>
           ))}
         </Row>
-      ))}
-    </Container>
+      </Container>
+    </>
   );
 };
 export default App;
