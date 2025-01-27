@@ -1,11 +1,6 @@
-import { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 
-function ImageCarousel({ data }) {//eslint-disable-line
-    const [index, setIndex] = useState(0);
-    const handleSelect = (selectedIndex) => {
-        setIndex(selectedIndex);
-    };
+function ImageCarousel({ data, idx }) {//eslint-disable-line
     return (
       <div
         style={{
@@ -16,8 +11,7 @@ function ImageCarousel({ data }) {//eslint-disable-line
         }}
       >
         <Carousel
-          activeIndex={index}
-          onSelect={handleSelect}
+          activeIndex={idx}
           style={{ width: "80%", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
         >
           {data.map((image,index ) => (//eslint-disable-line
@@ -27,7 +21,7 @@ function ImageCarousel({ data }) {//eslint-disable-line
                 style={{ height: "90vh", width: "100%" }}
               >
                 <img
-                  src={image["image-url"]}
+                  src={image["src"]}
                   style={{
                     width: "100%",
                     height: "100%",
