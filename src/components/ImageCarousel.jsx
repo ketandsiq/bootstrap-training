@@ -8,17 +8,17 @@ function ImageCarousel({ data, idx }) {//eslint-disable-line
 
     return (
       <div
-        // style={{
-        //   display: "flex",
-        //   position: "absolute",
-        //   backgroundColor: "rgba(0, 0, 0, 0.5)",
-        //   top: 0,
-        //   height: "100vh",
-        //   width: "100vw",
-        //   justifyContent: "center",
-        //   alignItems: "center",
-        //   zIndex: 1000,
-        // }}
+        style={{
+          //   display: "flex",
+          //   position: "absolute",
+          backgroundColor: "rgba(124, 124, 124, 0.45)",
+          //   top: 0,
+          //   height: "100vh",
+          //   width: "100vw",
+          //   justifyContent: "center",
+          //   alignItems: "center",
+          //   zIndex: 1000,
+        }}
       >
         {/* <Carousel
           activeIndex={index}
@@ -46,7 +46,61 @@ function ImageCarousel({ data, idx }) {//eslint-disable-line
             )
           )}
         </Carousel> */}
-        <ImageGallery items={data} s/>
+        <ImageGallery
+          items={data}
+          startIndex={idx}
+          showIndex={true} 
+          showPlayButton={false} 
+          showThumbnails={true}
+          showBullets={true} 
+          autoPlay={false} 
+          renderItem={(item) => (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center", 
+                alignItems: "center", 
+                height: "100vh", 
+                maxWidth: "90%",
+                margin: "0 auto", 
+              }}
+            >
+              <img
+                src={item.original}
+                alt="gallery"
+                style={{
+                  maxWidth: "100%", 
+                  maxHeight: "80vh", 
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", 
+                }}
+              />
+            </div>
+          )}
+          renderThumbInner={(item) => (
+            <div
+              style={{
+                padding: "5px",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                src={item.thumbnail}
+                alt="thumb"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  maxWidth: "80px", 
+                  maxHeight: "80px",
+                  borderRadius: "5px",
+                  objectFit: "cover", 
+                  border: "2px solid #fff", 
+                }}
+              />
+            </div>
+          )}
+        />
       </div>
     );
 }
