@@ -12,7 +12,8 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import App from "./App";
-import { store, persistor } from "./components/store/config.js";
+import { store, persistor } from "./store/config.js";
+import Dashboard from "./components/Dashboard/Dashboard.jsx";
 
 
 const router = createBrowserRouter(
@@ -20,6 +21,7 @@ const router = createBrowserRouter(
     <Route path="/" element={<App />}>
       <Route path="login" element={<Login />} />
       <Route path="gallery" element={<Gallery />} />
+      <Route path="dashboard" element={<Dashboard />} />
     </Route>
   )
 );

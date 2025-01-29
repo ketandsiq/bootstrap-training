@@ -3,7 +3,7 @@ import {
   increment,
   decrement,
   incrementByAmount,
-} from "./store/reducer/counterSlice";
+} from "../store/reducer/counterSlice";
 
 const Counter = () => {
   const count = useSelector((state) => state.counter.value);
