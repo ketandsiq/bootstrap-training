@@ -9,13 +9,7 @@ import "./style.css";
 
 // console.log(data);
 const data = [
-  {
-    thumbnail: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
-    original: "https://c2.staticflickr.com/9/8817/28973449265_07e3aa5d2e_b.jpg",
-    width: 320,
-    height: 174,
-    caption: "After Rain (Jeshu John - designerspics.com)",
-  },
+
   {
     thumbnail: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
     original: "https://c2.staticflickr.com/9/8356/28897120681_3b2c0f43e0_b.jpg",
