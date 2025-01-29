@@ -2,9 +2,10 @@ import "@progress/kendo-theme-default/dist/all.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import { Gallery } from "react-grid-gallery";
 import { Container, Overlay } from "react-bootstrap";
-import ImageCarousel from "./components/ImageCarousel";
+import ImageCarousel from "./components/ImageCarousel/ImageCarousel";
 import { useRef, useState } from "react";
 import StackGrid from "react-stack-grid";
+import "./style.css";
 
 // console.log(data);
 const data = [
@@ -194,16 +195,16 @@ const App = () => {
 
   return (
     <>
-        {show && (
-          <Overlay target={target.current} show={show}>
-            <ImageCarousel data={data} idx={index} />
-          </Overlay>
-        )}
+      {show && (
+        <Overlay target={target.current} show={show}>
+          <ImageCarousel data={data} idx={index} />
+        </Overlay>
+      )}
       <Container>
         <StackGrid
           columnWidth="33.33%"
-          // gutterWidth={10} // Horizontal space between grid items
-          gutterHeight={10} // Vertical space between grid items
+          // gutterWidth={10}
+          gutterHeight={10}
         >
           {data.map((item, imgIndex) => (
             <div
@@ -218,12 +219,7 @@ const App = () => {
               <img
                 src={item.thumbnail}
                 alt={`Item ${imgIndex}`}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  objectFit: "cover",
-                  borderRadius: "4px",
-                }}
+                className="stack-grid-image"
               />
             </div>
           ))}
