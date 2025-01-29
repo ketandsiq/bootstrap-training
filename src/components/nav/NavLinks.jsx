@@ -7,7 +7,7 @@ const NavLinks = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav text-center">
             <li className="nav-item">
-              <a className="nav-link " href="/home">
+              <a className="nav-link " href="#">
                 Home
               </a>
             </li>
