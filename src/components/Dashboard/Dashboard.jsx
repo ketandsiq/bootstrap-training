@@ -1,8 +1,16 @@
+import { Col, Container, Row } from "react-bootstrap"
 
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    
+      <Container>
+          <Row>
+              <Col>
+              
+              </Col>
+          </Row>
+      </Container>
   )
 }
 
