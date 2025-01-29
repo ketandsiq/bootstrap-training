@@ -3,7 +3,7 @@ import { Container, Overlay } from "react-bootstrap";
 import ImageCarousel from "../ImageCarousel/ImageCarousel";
 import StackGrid from "react-stack-grid";
 import { data } from "../../data";
-import style from "./Gallery.module.css";
+import style from "./gallery.module.css";
 
 const Gallery = () => {
   const [index, setIndex] = useState(0);
