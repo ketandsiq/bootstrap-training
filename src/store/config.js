@@ -1,6 +1,7 @@
 // redux store config file
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import counterSlice from "./reducer/counterSlice";
+import formSlice from "./reducer/formSlice";
 import {
   persistStore,
   persistReducer,
@@ -19,8 +20,13 @@ const persistConfig = {
   storage,
 };
 
+const rootReducer = combineReducers({
+  counter: counterSlice,
+  form: formSlice,
+});
+
 // Wrap reducer with persistReducer
-const persistedUserReducer = persistReducer(persistConfig, counterSlice);
+const persistedUserReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: {

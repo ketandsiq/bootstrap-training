@@ -2,7 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 const NavLinks = () => {
   return (
-    <nav className="navbar navbar-expand justify-content-center">
+    <nav className="navbar navbar-expand justify-content-center bg-dark-subtle">
       <div className="">
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav text-center">

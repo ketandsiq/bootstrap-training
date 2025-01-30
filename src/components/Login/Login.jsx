@@ -1,15 +1,33 @@
 import { Button, Container, Form, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
+import { useSelector, useDispatch } from "react-redux";
+import { validateForm, submitForm } from "../../store/reducer/formSlice";
 const Login = () => {
+  const dispatch = useDispatch();
+  const { validated, errors } = useSelector((state) => state.user.form);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const email = form.elements.email.value;
+    const password = form.elements.password.value;
+
+    dispatch(validateForm({ email, password }));
+
+    if (!errors.email && !errors.password) {
+      dispatch(submitForm({ email, password }));
+    }
+  };
+
   return (
     <>
       <div className="d-flex justify-content-center align-items-center vh-100">
         <Container
-          className="shadow-lg d-flex justify-content-center bg-dark-subtle p-5 rounded-4"
+          className="shadow-lg d-flex justify-content-center bg-dark-subtle p-5 rounded-4 m-3"
           style={{ maxWidth: "600px", width: "100%" }}
         >
-          <Form>
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <div className="text-center mb-4">
               <strong className="fs-3">Login</strong>
             </div>
@@ -18,14 +36,30 @@ const Login = () => {
                 <Form.Label>
                   <b> Email</b>
                 </Form.Label>
-                <Form.Control type="email" placeholder="Enter email" />
+                <Form.Control
+                  type="email"
+                  name="email"
+                  required
+                  isInvalid={!!errors.email}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.email}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="formGridPassword" className="mb-3">
                 <Form.Label>
                   <b>Password</b>
                 </Form.Label>
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control
+                  type="password"
+                  name="password"
+                  required
+                  isInvalid={!!errors.password}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.password}
+                </Form.Control.Feedback>
               </Form.Group>
             </Row>
 
