@@ -3,7 +3,7 @@ import "@progress/kendo-theme-default/dist/all.css";
 import { createRoot } from "react-dom/client";
 import { PersistGate } from "redux-persist/integration/react";
 import Gallery from "./components/Gallery/Gallery";
-import Login from "./components/Login/Login";
+import LoginTest from "./components/Login/LoginTest";
 import { Provider } from "react-redux";
 import {
   createBrowserRouter,
@@ -19,7 +19,7 @@ import Dashboard from "./components/Dashboard/Dashboard.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="login" element={<Login />} />
+      <Route path="login" element={<LoginTest />} />
       <Route path="gallery" element={<Gallery />} />
       <Route path="dashboard" element={<Dashboard />} />
     </Route>
