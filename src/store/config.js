@@ -40,4 +40,9 @@ export const store = configureStore({
     }),
 });
 
+// store.subscribe(() => {
+//   const state = store.getState();
+//   sessionStorage.setItem("counterValue", state.user.counter.value);
+// });
+
 export const persistor = persistStore(store);

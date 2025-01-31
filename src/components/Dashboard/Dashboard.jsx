@@ -1,17 +1,31 @@
 import { Col, Container, Row } from "react-bootstrap";
 import {
   Chart,
-  ChartCategoryAxis,
-  ChartCategoryAxisItem,
-  ChartLegend,
   ChartSeries,
   ChartSeriesItem,
 } from "@progress/kendo-react-charts";
 
 import ProcessedData from "./ProcessedData";
-
+// import { useEffect } from "react";
+// import { useLocation } from "react-router-dom";
 
 const Dashboard = () => {
+//   const location = useLocation();
+
+// useEffect(() => {
+//   const handleNavigation = () => {
+//     // Remove auth token whenever the user changes the URL\
+//       localStorage.removeItem("authToken");
+//   };
+
+//   // Run on mount (if user navigates manually to /dashboard)
+//   handleNavigation();
+
+//   return () => {
+//     handleNavigation(); // Runs when component unmounts (leaving dashboard)
+//   };
+// }, [location.pathname]); 
+
   const data = ProcessedData();
   console.log(data);
   return (

@@ -3,10 +3,11 @@ import { Input } from "@progress/kendo-react-inputs";
 import { Error } from "@progress/kendo-react-labels";
 import { Button } from "@progress/kendo-react-buttons";
 import { Container } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const emailRegex = new RegExp(/\S+@\S+\.\S+/);
 const passwordRegex = new RegExp(
-  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/
 );
 
 const emailValidator = (value) =>
@@ -26,16 +27,27 @@ const InputComponent = (fieldRenderProps) => {
       {visited && validationMessage && <Error>{validationMessage}</Error>}
     </div>
   );
-};
+}; 
 
 const LoginTest = () => {
-  const handleSubmit = (dataItem) => alert(JSON.stringify(dataItem, null, 2));
+  const navigate = useNavigate();
+  const handleSubmit = (dataItem) => {
+    if (dataItem.email === "test@test.com" && dataItem.password === "Password123##") {
+      const authToken = "mocked_jwt_token"; // Will replace this with actual token from API
+
+      localStorage.setItem("authToken", authToken);
+
+      navigate("/dashboard");
+    } else {
+      alert("Invalid credentials");
+    }
+  };
 
   return (
     <div className="d-flex justify-content-center align-items-center vh-100">
       <Container
         className="shadow-lg d-flex justify-content-center bg-dark-subtle p-5 rounded-4 m-3"
-        style={{ maxWidth: "20%", width: "100%" }}
+        style={{ maxWidth: "400px", width: "100%" }}
       >
         <Form
           onSubmit={handleSubmit}
