@@ -28,19 +28,30 @@ const data = transformErrors();
 
 // Transforming the data into the required tree structure
 const transformToTreeData = (data) => {
+  if (!Array.isArray(data)) return []; // Prevents undefined errors
+
   return data.map((category, index) => ({
-    id: index.toString(), // Unique ID for each category
-    text: category.category, // Category name as the text
-    items: category.sub_category.map((subCategory, subIndex) => ({
-      id: `${index}-${subIndex}`, // Unique ID for each sub-category
-      text: subCategory, // Subcategory name as text
-    })),
+    id: index.toString(),
+    text: category.category || "Unknown Category", // Fallback for missing category
+    expanded: false, // Ensure expanded is defined
+    checkField: false, // Ensure checkField is defined
+    checkIndeterminateField: false, // Ensure checkIndeterminateField is defined
+    items: Array.isArray(category.sub_category)
+      ? category.sub_category.map((subCategory, subIndex) => ({
+          id: `${index}-${subIndex}`,
+          text: subCategory || "Unknown Subcategory",
+          expanded: false,
+          checkField: false,
+          checkIndeterminateField: false,
+        }))
+      : [],
   }));
 };
 
 const DropDown = () => {
   const [value, setValue] = React.useState([]);
   const [expanded, setExpanded] = React.useState([]);
+
   const [filter, setFilter] = React.useState(null);
 
   const onChange = (event) =>
@@ -51,22 +62,30 @@ const DropDown = () => {
         value,
       })
     );
+  
+const onExpandChange = React.useCallback(
+  (event) => {
+    setExpanded((prevExpanded) =>
+      expandedState(event.item, dataItemKey, prevExpanded || [])
+    );
+  },
+  [setExpanded]
+);
 
-  const onExpandChange = React.useCallback(
-    (event) => setExpanded(expandedState(event.item, dataItemKey, expanded)),
-    [expanded]
-  );
+  const treeData = React.useMemo(() => {
+    const transformedData = transformToTreeData(data) || [];
 
-  const treeData = React.useMemo(
-    () =>
-      processMultiSelectTreeData(transformToTreeData(data), {
-        expanded,
-        value,
-        filter,
-        ...fields,
-      }),
-    [expanded, value, filter]
-  );
+    return processMultiSelectTreeData(transformedData, {
+      expanded: expanded || [], // Ensure expanded is always an array
+      value: value || [], // Ensure value is always an array
+      filter: filter || null, // Default filter to null
+      ...fields, // Spread required fields
+    });
+  }, [expanded, value, filter]);
+  console.log("Transformed Data:", transformToTreeData(data));
+  console.log("Processed Tree Data:", treeData);
+  console.log("Expanded State:", expanded);
+  console.log("Selected Values:", value);
 
   const onFilterChange = (event) => setFilter(event.filter);
 
@@ -77,7 +96,7 @@ const DropDown = () => {
         style={{
           width: "300px",
         }}
-        data={treeData}
+        data={transformToTreeData(data)}
         value={value}
         onChange={onChange}
         placeholder="Please select ..."

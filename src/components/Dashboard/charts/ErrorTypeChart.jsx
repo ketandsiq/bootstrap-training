@@ -2,7 +2,7 @@ import { Chart, ChartLegend, ChartSeries, ChartSeriesItem, ChartTitle } from "@p
 import ProcessedData from "../ProcessedData";
 
 const ErrorTypeChart = (date) => {
-    console.log(date);
+    // console.log(date);
     
     const data = ProcessedData(date.startDate, date.endDate);
   return (

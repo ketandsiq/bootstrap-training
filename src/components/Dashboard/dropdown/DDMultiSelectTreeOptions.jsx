@@ -13,16 +13,23 @@ export const getValueMap = (value, idGetter) => {
 };
 
 
-export const expandedState = (item, dataItemKey, expanded) => {
+export const expandedState = (item, dataItemKey, expanded = []) => {
+  if (!item || !dataItemKey) return expanded; // Prevent errors on undefined inputs
+
   const nextExpanded = expanded.slice();
   const keyGetter = getter(dataItemKey);
   const itemKey = keyGetter(item);
-  const index = expanded.findIndex((currentKey) => {
-    return currentKey === itemKey;
-  });
-  index === -1 ? nextExpanded.push(itemKey) : nextExpanded.splice(index, 1);
+  const index = nextExpanded.findIndex((currentKey) => currentKey === itemKey);
+
+  if (index === -1) {
+    nextExpanded.push(itemKey); // Expand if not already expanded
+  } else {
+    nextExpanded.splice(index, 1); // Collapse if already expanded
+  }
+
   return nextExpanded;
 };
+
 
 
 const mapMultiSelectTreeData = (data, options) => {

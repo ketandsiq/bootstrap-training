@@ -18,7 +18,7 @@ const Dashboard = () => {
     start: "Wed Jan 29 2025 00:00:00 GMT+0530 (India Standard Time) ",
     end: "Wed Jan 29 2025 00:00:00 GMT+0530 (India Standard Time) ",
   });
-  console.log(dateRange.start, dateRange.end)
+  // console.log(dateRange.start, dateRange.end)
   
   const handleDateRangeChange = (range) => {
     setDateRange(range);
