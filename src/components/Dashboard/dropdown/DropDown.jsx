@@ -56,12 +56,13 @@ const DropDown = () => {
 
   const onChange = (event) =>
     setValue(
-      getMultiSelectTreeValue(data, {
+      getMultiSelectTreeValue(treeData, {
         ...fields,
         ...event,
         value,
       })
     );
+    console.log(event)
   
 const onExpandChange = React.useCallback(
   (event) => {
@@ -87,6 +88,7 @@ const onExpandChange = React.useCallback(
   console.log("Expanded State:", expanded);
   console.log("Selected Values:", value);
 
+
   const onFilterChange = (event) => setFilter(event.filter);
 
   return (
@@ -96,7 +98,7 @@ const onExpandChange = React.useCallback(
         style={{
           width: "300px",
         }}
-        data={transformToTreeData(data)}
+        data={treeData}
         value={value}
         onChange={onChange}
         placeholder="Please select ..."

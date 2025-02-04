@@ -97,5 +97,16 @@ export const processMultiSelectTreeData = (tree, options) => {
     checkSetter: setter(checkField),
     checkIndeterminateSetter: setter(checkIndeterminateField),
   });
-  return filtering ? filterBy(result, [filter], subItemsField) : result;
+  const ensureDefaults = (nodes) =>
+    nodes.map((node) => ({
+      ...node,
+      expanded: node[expandField] ?? false, // Default expanded to false if missing
+      checkField: node[checkField] ?? false, // Default checkField to false if missing
+      checkIndeterminateField: node[checkIndeterminateField] ?? false, // Default checkIndeterminateField to false if missing
+      items: node[subItemsField] ? ensureDefaults(node[subItemsField]) : [],
+    }));
+  
+  return filtering
+    ? filterBy(ensureDefaults(result), [filter], subItemsField)
+    : ensureDefaults(result);
 };
