@@ -9,6 +9,9 @@ import {
 } from "./DDMultiSelectTreeOptions.jsx";
 import transformErrors from "./FilterJson.jsx";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setStoreValue } from "../../../store/reducer/categorySlice.jsx";
+
 const dataItemKey = "id";
 const checkField = "checkField";
 const checkIndeterminateField = "checkIndeterminateField";
@@ -54,24 +57,41 @@ const DropDown = () => {
 
   const [filter, setFilter] = React.useState(null);
 
-  const onChange = (event) =>
-    setValue(
-      getMultiSelectTreeValue(treeData, {
-        ...fields,
-        ...event,
-        value,
-      })
-    );
-    console.log(event)
+  const dispatch = useDispatch();
+  const storeValue = useSelector(
+    (state) => state.user.multiSelect.selectedValues
+  );
+
   
-const onExpandChange = React.useCallback(
-  (event) => {
-    setExpanded((prevExpanded) =>
-      expandedState(event.item, dataItemKey, prevExpanded || [])
-    );
-  },
-  [setExpanded]
-);
+  React.useEffect(() => {
+    // Only dispatch when value changes
+    dispatch(setStoreValue(value));
+  });
+
+
+  // console.log(storeValue);
+  const onChange = (event) => {
+    const newValue = getMultiSelectTreeValue(treeData, {
+      ...fields,
+      ...event,
+      value,
+    });
+    setValue(newValue);
+    dispatch(setStoreValue(newValue));
+  };
+
+
+
+
+
+  const onExpandChange = React.useCallback(
+    (event) => {
+      setExpanded((prevExpanded) =>
+        expandedState(event.item, dataItemKey, prevExpanded || [])
+      );
+    },
+    [setExpanded]
+  );
 
   const treeData = React.useMemo(() => {
     const transformedData = transformToTreeData(data) || [];
@@ -83,11 +103,10 @@ const onExpandChange = React.useCallback(
       ...fields, // Spread required fields
     });
   }, [expanded, value, filter]);
-  console.log("Transformed Data:", transformToTreeData(data));
-  console.log("Processed Tree Data:", treeData);
-  console.log("Expanded State:", expanded);
-  console.log("Selected Values:", value);
-
+  // console.log("Transformed Data:", transformToTreeData(data));
+  // console.log("Processed Tree Data:", treeData);
+  // console.log("Expanded State:", expanded);
+  // console.log("Selected Values:", value);
 
   const onFilterChange = (event) => setFilter(event.filter);
 

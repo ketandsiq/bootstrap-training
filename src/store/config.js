@@ -2,6 +2,7 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import counterSlice from "./reducer/counterSlice";
 import formSlice from "./reducer/formSlice";
+import categoryReducer from "./reducer/categorySlice";
 import {
   persistStore,
   persistReducer,
@@ -23,6 +24,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   counter: counterSlice,
   form: formSlice,
+  multiSelect: categoryReducer,
 });
 
 // Wrap reducer with persistReducer

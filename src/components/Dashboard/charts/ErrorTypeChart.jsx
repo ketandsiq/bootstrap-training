@@ -1,10 +1,16 @@
-import { Chart, ChartLegend, ChartSeries, ChartSeriesItem, ChartTitle } from "@progress/kendo-react-charts";
+import {
+  Chart,
+  ChartLegend,
+  ChartSeries,
+  ChartSeriesItem,
+  ChartTitle,
+} from "@progress/kendo-react-charts";
 import ProcessedData from "../ProcessedData";
 
 const ErrorTypeChart = (date) => {
-    // console.log(date);
-    
-    const data = ProcessedData(date.startDate, date.endDate);
+  // console.log(date);
+
+  const data = ProcessedData(date.startDate, date.endDate);
   return (
     <Chart className="m-5">
       <ChartTitle text="Error Count By Type" />

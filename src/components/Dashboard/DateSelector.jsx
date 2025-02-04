@@ -31,10 +31,10 @@ const DateSelector = ({ onDateRangeChange }) => {//eslint-disable-line
   const handleRangeSelection = (days) => {
     setValue(calculateRange(days));
   };
-  if (value.start !== null && value.end !== null) {
-    console.log(value.start.toLocaleDateString("en-GB"));
-    console.log(value.end.toLocaleDateString("en-GB"));
-  }
+  // if (value.start !== null && value.end !== null) {
+  //   console.log(value.start.toLocaleDateString("en-GB"));
+  //   console.log(value.end.toLocaleDateString("en-GB"));
+  // }
   
   const [isExpanded, setIsExpanded] = useState(false);
   return (

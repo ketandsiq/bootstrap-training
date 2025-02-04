@@ -15,8 +15,8 @@ const Dashboard = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [dateRange, setDateRange] = useState({
-    start: "Wed Jan 29 2025 00:00:00 GMT+0530 (India Standard Time) ",
-    end: "Wed Jan 29 2025 00:00:00 GMT+0530 (India Standard Time) ",
+    start:null,
+    end: null,
   });
   // console.log(dateRange.start, dateRange.end)
   
