@@ -83,8 +83,13 @@ const LoginTest = () => {
                   />
                 </div>
               </fieldset>
-              <div className="k-form-buttons">
-                <Button disabled={!formRenderProps.allowSubmit}>Submit</Button>
+              <div>
+                <Button
+                  className="btn btn-primary"
+                  disabled={!formRenderProps.allowSubmit}
+                >
+                  Submit
+                </Button>
               </div>
             </FormElement>
           )}

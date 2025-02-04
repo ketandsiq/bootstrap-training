@@ -1,26 +1,36 @@
-import errorData from "../../errors.json";
+import errorData from "../../errors4.json";
 
 
-const ProcessedData = () => {
-    const errorCount = errorData.reduce((acc, error) => {
-      // If the error_type exists in the accumulator, increment it
-      if (acc[error.error_type]) {
-        acc[error.error_type]++;
-      } else {
-        // If it's the first time encountering this error_type, set the count to 1
-        acc[error.error_type] = 1;
-      }
-      return acc;
-    }, {});
+const ProcessedData = (startDate, endDate) => {
+  // console.log(startDate,endDate)
+  
+  const start = new Date(startDate); // Extract only YYYY-MM-DD
+  const end = new Date(endDate);// Extract only YYYY-MM-DD
 
-    // Convert to desired format [{error_type: "ERROR", count: 2}, ...]
-    const result = Object.keys(errorCount).map((errorType) => ({
-      error_type: errorType,
-      count: errorCount[errorType],
-    }));
-  return (
-    result
-  )
-}
+  console.log("Start Date (ISO):", start, "End Date (ISO):", end);
+
+  // Filter errors within the date range
+  const filteredData = errorData.filter((error) => {
+    const errorDate = new Date(error.timestamp); // Normalize to YYYY-MM-DD
+    return errorDate >= start && errorDate <= end;
+  });
+
+  console.log("Filtered Data:", filteredData);
+
+  // Count occurrences of each error type
+  const errorCount = filteredData.reduce((acc, error) => {
+    acc[error.error_subcategory] = (acc[error.error_subcategory] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Convert to desired format
+  const result = Object.keys(errorCount).map((errorType) => ({
+    error_type: errorType,
+    count: errorCount[errorType],
+  }));
+
+  console.log("Processed Result:", result);
+  return result;
+};
 
 export default ProcessedData
