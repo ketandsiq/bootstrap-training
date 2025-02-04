@@ -9,7 +9,7 @@ import {
 } from "./DDMultiSelectTreeOptions.jsx";
 import transformErrors from "./FilterJson.jsx";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setStoreValue } from "../../../store/reducer/categorySlice.jsx";
 
 const dataItemKey = "id";
@@ -58,9 +58,6 @@ const DropDown = () => {
   const [filter, setFilter] = React.useState(null);
 
   const dispatch = useDispatch();
-  const storeValue = useSelector(
-    (state) => state.user.multiSelect.selectedValues
-  );
 
   
   React.useEffect(() => {

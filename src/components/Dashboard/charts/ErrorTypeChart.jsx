@@ -2,6 +2,7 @@ import {
   Chart,
   ChartLegend,
   ChartSeries,
+  ChartTooltip,
   ChartSeriesItem,
   ChartTitle,
 } from "@progress/kendo-react-charts";
@@ -13,6 +14,7 @@ const ErrorTypeChart = (date) => {
   const data = ProcessedData(date.startDate, date.endDate);
   return (
     <Chart className="m-5">
+      <ChartTooltip />
       <ChartTitle text="Error Count By Type" />
       <ChartLegend position="top" orientation="horizontal" />
       <ChartSeries>
