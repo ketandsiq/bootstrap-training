@@ -9,7 +9,7 @@ import {
 } from "./DDMultiSelectTreeOptions.jsx";
 import transformErrors from "./FilterJson.jsx";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setStoreValue } from "../../../store/reducer/categorySlice.jsx";
 
 const dataItemKey = "id";
@@ -52,60 +52,53 @@ const transformToTreeData = (data) => {
 };
 
 const DropDown = () => {
-  const [value, setValue] = React.useState([]);
-  const [expanded, setExpanded] = React.useState([]);
-
-  const [filter, setFilter] = React.useState(null);
-
   const dispatch = useDispatch();
 
-  
-  React.useEffect(() => {
-    // Only dispatch when value changes
-    dispatch(setStoreValue(value));
-  });
-
-
-  // console.log(storeValue);
+  // Selecting state from Redux store
+  const selectedValues = useSelector(
+    (state) => state.user.multiSelect.selectedValues
+  );
+  const expandedStateValues = useSelector(
+    (state) => state.user.multiSelect.expanded || []
+  );
+  const filterValue = useSelector(
+    (state) => state.user.multiSelect.filter || null
+  );
+  console.log(selectedValues)
   const onChange = (event) => {
     const newValue = getMultiSelectTreeValue(treeData, {
       ...fields,
       ...event,
-      value,
+      value: selectedValues,
     });
-    setValue(newValue);
     dispatch(setStoreValue(newValue));
   };
 
-
-
-
-
   const onExpandChange = React.useCallback(
     (event) => {
-      setExpanded((prevExpanded) =>
-        expandedState(event.item, dataItemKey, prevExpanded || [])
+      dispatch(
+        setStoreValue({
+          expanded: expandedState(event.item, dataItemKey, expandedStateValues),
+        })
       );
     },
-    [setExpanded]
+    [dispatch, expandedStateValues]
   );
 
   const treeData = React.useMemo(() => {
     const transformedData = transformToTreeData(data) || [];
 
     return processMultiSelectTreeData(transformedData, {
-      expanded: expanded || [], // Ensure expanded is always an array
-      value: value || [], // Ensure value is always an array
-      filter: filter || null, // Default filter to null
-      ...fields, // Spread required fields
+      expanded: expandedStateValues,
+      value: selectedValues,
+      filter: filterValue,
+      ...fields,
     });
-  }, [expanded, value, filter]);
-  // console.log("Transformed Data:", transformToTreeData(data));
-  // console.log("Processed Tree Data:", treeData);
-  // console.log("Expanded State:", expanded);
-  // console.log("Selected Values:", value);
+  }, [selectedValues, expandedStateValues, filterValue]);
 
-  const onFilterChange = (event) => setFilter(event.filter);
+  const onFilterChange = (event) => {
+    dispatch(setStoreValue({ filter: event.filter }));
+  };
 
   return (
     <div className="w-25">
@@ -115,7 +108,7 @@ const DropDown = () => {
           marginTop: "12px",
         }}
         data={treeData}
-        value={value}
+        value={selectedValues}
         onChange={onChange}
         placeholder="Please select ..."
         textField={textField}

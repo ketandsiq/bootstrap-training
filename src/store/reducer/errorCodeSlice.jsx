@@ -9,10 +9,10 @@ const errorCodeSlice = createSlice({
   initialState,
   reducers: {
     setStoreValue: (state, action) => {
-      state.selectedErros = action.payload;
+      state.selectedErrors = action.payload; // Fixed typo
     },
     clearValue: (state) => {
-      state.selectederrors = [];
+      state.selectedErrors = []; // Fixed typo
     },
   },
 });

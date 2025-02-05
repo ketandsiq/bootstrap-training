@@ -10,7 +10,7 @@ const dateRangeOptions = [
   { label: "Last Quarter", days: 90 },
   { label: "Last 180 Days", days: 180 },
   { label: "Last Year", days: 365 },
-  // { label: "Year to Date", days: "ytd" },
+  { label: "Clear Selection", days: null },
   // { label: "All Time", days: "all" },
 ];
 
@@ -28,9 +28,14 @@ const DateSelector = ({ onDateRangeChange }) => {//eslint-disable-line
     start.setDate(end.getDate() - days);
     return { start, end };
   };
-  const handleRangeSelection = (days) => {
+const handleRangeSelection = (days) => {
+  if (days) {
     setValue(calculateRange(days));
-  };
+  } else {
+    setValue({ start: null, end: null });
+  }
+};
+
   // if (value.start !== null && value.end !== null) {
   //   console.log(value.start.toLocaleDateString("en-GB"));
   //   console.log(value.end.toLocaleDateString("en-GB"));
@@ -47,10 +52,10 @@ const DateSelector = ({ onDateRangeChange }) => {//eslint-disable-line
           look="outline"
           style={{ width: "100%", marginTop: "12px" }}
         >
-          {value.start
-            ? `${value.start.toLocaleDateString("en-GB")} - ${
-                value.end ? value.end.toLocaleDateString("en-GB") : " "
-              }`
+          {value.start && value.end
+            ? `${value.start.toLocaleDateString(
+                "en-GB"
+              )} - ${value.end.toLocaleDateString("en-GB")}`
             : "Select Date Range"}
         </Button>
         {isExpanded && (

@@ -1,46 +1,48 @@
 import errorData from "../../errors4.json";
-import {useSelector} from "react-redux"
+import { useSelector } from "react-redux";
 
 const ProcessedData = (startDate, endDate) => {
   // console.log(startDate,endDate)
-  const store = useSelector((state) => state.user.multiSelect.selectedValues);
-  console.log(store)
-
-  const start = new Date(startDate); // Extract only YYYY-MM-DD
-  const end = new Date(endDate);// Extract only YYYY-MM-DD
-
+  const selectedCategoryStore = useSelector(
+    (state) => state.user.multiSelect.selectedValues
+  );
+  // console.log(selectedCategoryStore)
+  const selectedErrorsStore = useSelector(
+    (state) => state.user.multiSelectErrors.selectedErrors
+  );
+  
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  console.log(selectedCategoryStore);
+  console.log(selectedErrorsStore);
+  
   // console.log("Start Date (ISO):", start, "End Date (ISO):", end);
 
-  // Filter errors within the date range
   const filteredData = errorData.filter((error) => {
-    const errorDate = new Date(error.timestamp); // Normalize to YYYY-MM-DD
+    const errorDate = new Date(error.timestamp);
     const isInDateRange = errorDate >= start && errorDate <= end;
 
-    // Check if store contains the error's subcategory
-    const matchesText = store.some(
+    const matchesText = selectedCategoryStore.some(
       (item) => item.text === error.error_subcategory
     );
 
     return isInDateRange && matchesText;
   });
 
+  // console.log(filteredData)
 
-  console.log(filteredData)
-
-  // Count occurrences of each error type
   const errorDataMap = filteredData.reduce((acc, error) => {
     if (!acc[error.error_subcategory]) {
       acc[error.error_subcategory] = {
         count: 0,
-        error_code: error.error_code, // Store the first occurrence of error_code
+        error_code: error.error_code,
       };
     }
     acc[error.error_subcategory].count += 1;
     return acc;
   }, {});
 
-  console.log(errorDataMap);
-
+  // console.log(errorDataMap);
 
   const result = Object.keys(errorDataMap).map((errorType) => ({
     error_type: errorType,
@@ -52,4 +54,4 @@ const ProcessedData = (startDate, endDate) => {
   return result;
 };
 
-export default ProcessedData
+export default ProcessedData;

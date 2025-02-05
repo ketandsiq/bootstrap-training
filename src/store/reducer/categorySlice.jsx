@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  selectedValues: [], // This replaces the React useState([]) for `value`
+  selectedValues: [],
+  expanded: [], // Added expanded state
+  filter: null, // Added filter state
 };
 
 const categorySlice = createSlice({
@@ -9,10 +11,22 @@ const categorySlice = createSlice({
   initialState,
   reducers: {
     setStoreValue: (state, action) => {
-      state.selectedValues = action.payload;
+      if (Array.isArray(action.payload)) {
+        state.selectedValues = action.payload;
+      } else {
+        state.selectedValues =
+          action.payload.selectedValues || state.selectedValues;
+        state.expanded = action.payload.expanded || state.expanded;
+        state.filter =
+          action.payload.filter !== undefined
+            ? action.payload.filter
+            : state.filter;
+      }
     },
     clearValue: (state) => {
       state.selectedValues = [];
+      state.expanded = [];
+      state.filter = null;
     },
   },
 });

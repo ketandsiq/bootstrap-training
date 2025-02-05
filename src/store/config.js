@@ -14,7 +14,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Uses localStorage to persist the state when app is closed
+import storage from "redux-persist/lib/storage"; 
 
 // Persist config
 const persistConfig = {
@@ -27,6 +27,7 @@ const rootReducer = combineReducers({
   form: formSlice,
   multiSelect: categoryReducer,
   multiSelectErrors: errorCodeReducer,
+
 });
 
 // Wrap reducer with persistReducer
@@ -43,10 +44,5 @@ export const store = configureStore({
       },
     }),
 });
-
-// store.subscribe(() => {
-//   const state = store.getState();
-//   sessionStorage.setItem("counterValue", state.user.counter.value);
-// });
 
 export const persistor = persistStore(store);
