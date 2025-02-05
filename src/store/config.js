@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import counterSlice from "./reducer/counterSlice";
 import formSlice from "./reducer/formSlice";
 import categoryReducer from "./reducer/categorySlice";
+import errorCodeReducer from "./reducer/errorCodeSlice"
 import {
   persistStore,
   persistReducer,
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
   counter: counterSlice,
   form: formSlice,
   multiSelect: categoryReducer,
+  multiSelectErrors: errorCodeReducer,
 });
 
 // Wrap reducer with persistReducer

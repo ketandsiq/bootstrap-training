@@ -38,10 +38,10 @@ const DateSelector = ({ onDateRangeChange }) => {//eslint-disable-line
   
   const [isExpanded, setIsExpanded] = useState(false);
   return (
-    <div className="k-card k-rounded-md" style={{ width: "300px" }}>
-      <div style={{ padding: "20px" }}>
-        <h2 className="k-card-title">Date Range</h2>
-        {value.start && "Showing Data from:-"}
+    <div className="" style={{ width: "300px" }}>
+      <div className="d-inline">
+        <span>Date Range - </span>
+        <span>{value.start && "Showing Data from:-"}</span>
         <Button
           onClick={() => setIsExpanded(!isExpanded)}
           look="outline"

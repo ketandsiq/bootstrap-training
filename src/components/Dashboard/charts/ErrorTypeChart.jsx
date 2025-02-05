@@ -12,6 +12,7 @@ const ErrorTypeChart = (date) => {
   // console.log(date);
 
   const data = ProcessedData(date.startDate, date.endDate);
+  console.log(data)
   return (
     <Chart className="m-5">
       <ChartTooltip />

@@ -108,11 +108,11 @@ const DropDown = () => {
   const onFilterChange = (event) => setFilter(event.filter);
 
   return (
-    <div>
+    <div className="w-25">
       <div>Categories:</div>
       <MultiSelectTree
         style={{
-          width: "300px",
+          marginTop: "12px",
         }}
         data={treeData}
         value={value}

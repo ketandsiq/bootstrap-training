@@ -5,6 +5,7 @@ import ErrorTypeChart from "./charts/ErrorTypeChart";
 import { useState } from "react";
 import DateSelector from "./DateSelector";
 import DropDown from "./dropdown/DropDown";
+import ErrorCodeDropdown from "./dropdown/multiselect/ErrorCodeDropdown";
 
 // import { useEffect } from "react";
 // import { useLocation } from "react-router-dom";
@@ -61,8 +62,9 @@ const Dashboard = () => {
         </Offcanvas>
         <Col className="bg-warning-subtle">
           <Row>
-            <Row className="d-flex justify-content-end">
+            <Row className="d-flex justify-content-around">
               <DropDown></DropDown>
+              <ErrorCodeDropdown/>
               <DateSelector onDateRangeChange={handleDateRangeChange} />
             </Row>
             <Row>

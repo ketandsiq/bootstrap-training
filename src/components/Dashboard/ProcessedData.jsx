@@ -24,18 +24,28 @@ const ProcessedData = (startDate, endDate) => {
     return isInDateRange && matchesText;
   });
 
-  // console.log("Filtered Data:", filteredData);
+
+  console.log(filteredData)
 
   // Count occurrences of each error type
-  const errorCount = filteredData.reduce((acc, error) => {
-    acc[error.error_subcategory] = (acc[error.error_subcategory] || 0) + 1;
+  const errorDataMap = filteredData.reduce((acc, error) => {
+    if (!acc[error.error_subcategory]) {
+      acc[error.error_subcategory] = {
+        count: 0,
+        error_code: error.error_code, // Store the first occurrence of error_code
+      };
+    }
+    acc[error.error_subcategory].count += 1;
     return acc;
   }, {});
 
-  // Convert to desired format
-  const result = Object.keys(errorCount).map((errorType) => ({
+  console.log(errorDataMap);
+
+
+  const result = Object.keys(errorDataMap).map((errorType) => ({
     error_type: errorType,
-    count: errorCount[errorType],
+    count: errorDataMap[errorType].count,
+    error_code: errorDataMap[errorType].error_code,
   }));
 
   // console.log("Processed Result:", result);
