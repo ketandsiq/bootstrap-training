@@ -10,25 +10,46 @@ const ProcessedData = (startDate, endDate) => {
   const selectedErrorsStore = useSelector(
     (state) => state.user.multiSelectErrors.selectedErrors
   );
-  
+
   const start = new Date(startDate);
   const end = new Date(endDate);
   console.log(selectedCategoryStore);
   console.log(selectedErrorsStore);
-  
-  // console.log("Start Date (ISO):", start, "End Date (ISO):", end);
 
+  // console.log("Start Date (ISO):", start, "End Date (ISO):", end);
   const filteredData = errorData.filter((error) => {
     const errorDate = new Date(error.timestamp);
     const isInDateRange = errorDate >= start && errorDate <= end;
 
-    const matchesText = selectedCategoryStore.some(
-      (item) => item.text === error.error_subcategory
-    );
-
-    return isInDateRange && matchesText;
+    if (
+      selectedCategoryStore.length !== 0 &&
+      selectedErrorsStore.length !== 0
+    ) {
+      const matchesText = selectedCategoryStore.some(
+        (item) => item.text === error.error_subcategory
+      );
+      const matchesErrorCode = selectedErrorsStore.some(
+        (item) => item.value === error.error_code
+      );
+      return isInDateRange && matchesText && matchesErrorCode;
+    } else if (
+      selectedCategoryStore.length === 0 &&
+      selectedErrorsStore.length > 0
+    ) {
+      const matchesErrorCode = selectedErrorsStore.some(
+        (item) => item.value === error.error_code
+      );
+      return isInDateRange && matchesErrorCode;
+    } else if (
+      selectedCategoryStore.length > 0 &&
+      selectedErrorsStore.length === 0
+    ) {
+      const matchesText = selectedCategoryStore.some(
+        (item) => item.text === error.error_subcategory
+      );
+      return isInDateRange && matchesText;
+    }
   });
-
   // console.log(filteredData)
 
   const errorDataMap = filteredData.reduce((acc, error) => {
