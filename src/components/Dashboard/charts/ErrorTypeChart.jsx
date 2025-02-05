@@ -8,10 +8,10 @@ import {
 } from "@progress/kendo-react-charts";
 import ProcessedData from "../ProcessedData";
 
-const ErrorTypeChart = (date) => {
+const ErrorTypeChart = () => {
   // console.log(date);
 
-  const data = ProcessedData(date.startDate, date.endDate);
+  const data = ProcessedData();
   console.log(data)
   return (
     <Chart className="m-5">

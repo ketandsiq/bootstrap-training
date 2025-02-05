@@ -43,7 +43,7 @@ const ErrorCodeDropdown = () => {
         textField="text"
         dataItemKey="value"
         onChange={onChange}
-        value={selectedErrors} // Get value from Redux store
+        value={selectedErrors} 
         placeholder="Please select ..."
         
       />

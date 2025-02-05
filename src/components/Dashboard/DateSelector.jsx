@@ -1,8 +1,9 @@
 import { Button } from "@progress/kendo-react-buttons";
 import { DateRangePicker } from "@progress/kendo-react-dateinputs";
 import { Dialog } from "@progress/kendo-react-dialogs";
-import { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setDateRange } from "../../store/reducer/dateRangeSlice";
 
 const dateRangeOptions = [
   { label: "Last 7 Days", days: 7 },
@@ -11,51 +12,57 @@ const dateRangeOptions = [
   { label: "Last 180 Days", days: 180 },
   { label: "Last Year", days: 365 },
   { label: "Clear Selection", days: null },
-  // { label: "All Time", days: "all" },
 ];
 
-const DateSelector = ({ onDateRangeChange }) => {//eslint-disable-line
-  const [value, setValue] = useState({
-    start: null,
-    end: null,
-  });
-  useEffect(() => {
-    onDateRangeChange(value);
-  }, [value, onDateRangeChange]);
+const DateSelector = () => {
+  const dispatch = useDispatch();
+  const value = useSelector((state) => state.user.dateRange);
+
+  // ✅ Fix: Function to safely parse date strings
+  const parseStringToDate = (date) => (date ? new Date(date) : null);
+
+  // ✅ Fix: Ensure only ISO strings are sent to Redux
   const calculateRange = (days) => {
     const end = new Date();
     const start = new Date();
     start.setDate(end.getDate() - days);
-    return { start, end };
+    return { start: start.toISOString(), end: end.toISOString() };
   };
-const handleRangeSelection = (days) => {
-  if (days) {
-    setValue(calculateRange(days));
-  } else {
-    setValue({ start: null, end: null });
-  }
-};
 
-  // if (value.start !== null && value.end !== null) {
-  //   console.log(value.start.toLocaleDateString("en-GB"));
-  //   console.log(value.end.toLocaleDateString("en-GB"));
-  // }
-  
+  const handleRangeSelection = (days) => {
+    if (days) {
+      dispatch(setDateRange(calculateRange(days)));
+    } else {
+      dispatch(setDateRange({ start: null, end: null })); // Clear selection
+    }
+  };
+
+  const handleCustomDateChange = (e) => {
+    if (e.value.start && e.value.end) {
+      dispatch(
+        setDateRange({
+          start: e.value.start.toISOString(),
+          end: e.value.end.toISOString(),
+        })
+      );
+    }
+  };
+
   const [isExpanded, setIsExpanded] = useState(false);
+
   return (
-    <div className="" style={{ width: "300px" }}>
+    <div style={{ width: "300px" }}>
       <div className="d-inline">
         <span>Date Range - </span>
-        <span>{value.start && "Showing Data from:-"}</span>
+        <span>{value.start && "Showing Data from:"}</span>
         <Button
           onClick={() => setIsExpanded(!isExpanded)}
           look="outline"
           style={{ width: "100%", marginTop: "12px" }}
         >
           {value.start && value.end
-            ? `${value.start.toLocaleDateString(
-                "en-GB"
-              )} - ${value.end.toLocaleDateString("en-GB")}`
+            ? `${parseStringToDate(value.start).toLocaleDateString("en-GB")} - 
+               ${parseStringToDate(value.end).toLocaleDateString("en-GB")}`
             : "Select Date Range"}
         </Button>
         {isExpanded && (
@@ -77,8 +84,11 @@ const handleRangeSelection = (days) => {
                   Select Custom Range
                 </h3>
                 <DateRangePicker
-                  value={value}
-                  onChange={(e) => setValue(e.value)}
+                  value={{
+                    start: value.start ? parseStringToDate(value.start) : null,
+                    end: value.end ? parseStringToDate(value.end) : null,
+                  }}
+                  onChange={handleCustomDateChange}
                   format="dd/MM/yyyy"
                   style={{ width: "100%" }}
                   show={true}

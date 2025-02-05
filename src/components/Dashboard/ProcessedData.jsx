@@ -1,8 +1,9 @@
 import errorData from "../../errors4.json";
 import { useSelector } from "react-redux";
 
-const ProcessedData = (startDate, endDate) => {
-  // console.log(startDate,endDate)
+
+const ProcessedData = () => {
+  // console.log(start,endDate)
   const selectedCategoryStore = useSelector(
     (state) => state.user.multiSelect.selectedValues
   );
@@ -11,8 +12,10 @@ const ProcessedData = (startDate, endDate) => {
     (state) => state.user.multiSelectErrors.selectedErrors
   );
 
-  const start = new Date(startDate);
-  const end = new Date(endDate);
+  const dateRangeStore = useSelector((state) => state.user.dateRange);
+  
+  const start = new Date(dateRangeStore.start);
+  const end = new Date(dateRangeStore.end);
   console.log(selectedCategoryStore);
   console.log(selectedErrorsStore);
 

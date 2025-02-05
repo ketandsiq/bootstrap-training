@@ -15,16 +15,9 @@ const Dashboard = () => {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const [dateRange, setDateRange] = useState({
-    start:null,
-    end: null,
-  });
   // console.log(dateRange.start, dateRange.end)
   
-  const handleDateRangeChange = (range) => {
-    setDateRange(range);
 
-  };
   
   //   const location = useLocation();
 
@@ -65,11 +58,11 @@ const Dashboard = () => {
             <Row className="d-flex justify-content-around">
               <DropDown></DropDown>
               <ErrorCodeDropdown/>
-              <DateSelector onDateRangeChange={handleDateRangeChange} />
+              <DateSelector />
             </Row>
             <Row>
               <Col>
-                <ErrorTypeChart startDate={dateRange.start} endDate={dateRange.end} />
+                <ErrorTypeChart/>
               </Col>
             </Row>
           </Row>
