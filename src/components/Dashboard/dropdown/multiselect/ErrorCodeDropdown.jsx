@@ -28,7 +28,7 @@ const ErrorCodeDropdown = () => {
   const selectedErrors = useSelector(
     (state) => state.user.multiSelectErrors.selectedErrors
   );
-  console.log(selectedErrors);
+  // console.log(selectedErrors);
   
   const onChange = (event) => {
     dispatch(setStoreValue(event.value)); // Update Redux store

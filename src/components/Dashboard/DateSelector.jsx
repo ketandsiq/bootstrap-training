@@ -37,14 +37,20 @@ const DateSelector = () => {
     }
   };
 
+  const [selectedRange, setSelectedRange] = useState({
+    start: value.start || null,
+    end: value.end || null,
+  });
   const handleCustomDateChange = (e) => {
-    if (e.value.start && e.value.end) {
-      dispatch(
-        setDateRange({
-          start: e.value.start.toISOString(),
-          end: e.value.end.toISOString(),
-        })
-      );
+    const newRange = {
+      start: e.value.start ? e.value.start.toISOString() : selectedRange.start,
+      end: e.value.end ? e.value.end.toISOString() : selectedRange.end,
+    };
+
+    setSelectedRange(newRange);
+
+    if (newRange.start && newRange.end) {
+      dispatch(setDateRange(newRange));
     }
   };
 

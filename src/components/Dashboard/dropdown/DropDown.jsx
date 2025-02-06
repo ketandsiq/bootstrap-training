@@ -64,7 +64,7 @@ const DropDown = () => {
   const filterValue = useSelector(
     (state) => state.user.multiSelect.filter || null
   );
-  console.log(selectedValues)
+  // console.log(selectedValues)
   const onChange = (event) => {
     const newValue = getMultiSelectTreeValue(treeData, {
       ...fields,

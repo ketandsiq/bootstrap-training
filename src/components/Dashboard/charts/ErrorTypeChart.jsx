@@ -12,9 +12,9 @@ const ErrorTypeChart = () => {
   // console.log(date);
 
   const data = ProcessedData();
-  console.log(data)
+  // console.log(data)
   return (
-    <Chart className="m-5">
+    <Chart className="m-5 ">
       <ChartTooltip />
       <ChartTitle text="Error Count By Type" />
       <ChartLegend position="top" orientation="horizontal" />

@@ -1,81 +1,113 @@
 import errorData from "../../errors4.json";
 import { useSelector } from "react-redux";
-
+import DateRangeLineChart from "./charts/lineChart/dateRangeLineChart";
 
 const ProcessedData = () => {
-  // console.log(start,endDate)
   const selectedCategoryStore = useSelector(
     (state) => state.user.multiSelect.selectedValues
   );
-  // console.log(selectedCategoryStore)
+
   const selectedErrorsStore = useSelector(
     (state) => state.user.multiSelectErrors.selectedErrors
   );
 
   const dateRangeStore = useSelector((state) => state.user.dateRange);
-  
+
+  // Get breakpoints from DateRangeLineChart
+  const breakpointData = DateRangeLineChart();
+  const hasBreakpoints = breakpointData.length > 0;
+
+  // If breakpoints exist, extract step and dates; otherwise, use empty arrays
+  const dates = hasBreakpoints ? breakpointData[0].dates : [];
+  console.log(dates);
   const start = new Date(dateRangeStore.start);
   const end = new Date(dateRangeStore.end);
-  console.log(selectedCategoryStore);
-  console.log(selectedErrorsStore);
 
-  // console.log("Start Date (ISO):", start, "End Date (ISO):", end);
+  // Filter data based on selected categories and errors
   const filteredData = errorData.filter((error) => {
     const errorDate = new Date(error.timestamp);
     const isInDateRange = errorDate >= start && errorDate <= end;
 
-    if (
-      selectedCategoryStore.length !== 0 &&
-      selectedErrorsStore.length !== 0
-    ) {
-      const matchesText = selectedCategoryStore.some(
-        (item) => item.text === error.error_subcategory
+    if (selectedCategoryStore.length && selectedErrorsStore.length) {
+      return (
+        selectedCategoryStore.some(
+          (item) => item.text === error.error_subcategory
+        ) &&
+        selectedErrorsStore.some((item) => item.value === error.error_code) &&
+        isInDateRange
       );
-      const matchesErrorCode = selectedErrorsStore.some(
-        (item) => item.value === error.error_code
+    } else if (!selectedCategoryStore.length && selectedErrorsStore.length) {
+      return (
+        selectedErrorsStore.some((item) => item.value === error.error_code) &&
+        isInDateRange
       );
-      return isInDateRange && matchesText && matchesErrorCode;
-    } else if (
-      selectedCategoryStore.length === 0 &&
-      selectedErrorsStore.length > 0
-    ) {
-      const matchesErrorCode = selectedErrorsStore.some(
-        (item) => item.value === error.error_code
+    } else if (selectedCategoryStore.length && !selectedErrorsStore.length) {
+      return (
+        selectedCategoryStore.some(
+          (item) => item.text === error.error_subcategory
+        ) && isInDateRange
       );
-      return isInDateRange && matchesErrorCode;
-    } else if (
-      selectedCategoryStore.length > 0 &&
-      selectedErrorsStore.length === 0
-    ) {
-      const matchesText = selectedCategoryStore.some(
-        (item) => item.text === error.error_subcategory
-      );
-      return isInDateRange && matchesText;
     }
   });
-  // console.log(filteredData)
 
-  const errorDataMap = filteredData.reduce((acc, error) => {
-    if (!acc[error.error_subcategory]) {
-      acc[error.error_subcategory] = {
+  // Initialize an object to group errors by subcategory
+  const errorDataMap = {};
+
+  // Iterate over breakpoints if they exist; otherwise, skip this logic
+  if (hasBreakpoints) {
+    filteredData.forEach((error) => {
+      const errorDateStr = new Date(error.timestamp)
+        .toISOString()
+        .split("T")[0]; // Get 'YYYY-MM-DD' format
+      const dateIndex = dates.indexOf(errorDateStr); // Find its index in the breakpoints array
+
+      if (dateIndex !== -1) {
+        const errorType = error.error_subcategory;
+
+        if (!errorDataMap[errorType]) {
+          errorDataMap[errorType] = {
+            count: 0,
+            error_code: error.error_code,
+            line_data: {
+              count_per_date: Array(dates.length).fill(0),
+              dates: dates,
+            },
+          };
+        }
+
+        // Increment overall count
+        errorDataMap[errorType].count += 1;
+
+        // Increment count for the exact date index
+        errorDataMap[errorType].line_data.count_per_date[dateIndex] += 1;
+      }
+    });
+  }
+
+  // Process final results
+  const result = filteredData.reduce((acc, error) => {
+    const errorType = error.error_subcategory;
+    if (!acc[errorType]) {
+      acc[errorType] = {
         count: 0,
         error_code: error.error_code,
+        line_data: {
+          count_per_date: hasBreakpoints ? Array(dates.length - 1).fill(0) : [],
+          dates: hasBreakpoints ? dates : [],
+        },
       };
     }
-    acc[error.error_subcategory].count += 1;
+    acc[errorType].count += 1;
     return acc;
-  }, {});
+  }, errorDataMap);
 
-  // console.log(errorDataMap);
-
-  const result = Object.keys(errorDataMap).map((errorType) => ({
+  // Convert object to array format
+  return Object.keys(result).map((errorType) => ({
     error_type: errorType,
-    count: errorDataMap[errorType].count,
-    error_code: errorDataMap[errorType].error_code,
+    count: result[errorType].count,
+    error_code: result[errorType].error_code,
+    line_data: result[errorType].line_data,
   }));
-
-  // console.log("Processed Result:", result);
-  return result;
 };
 
 export default ProcessedData;

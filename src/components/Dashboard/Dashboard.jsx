@@ -1,20 +1,22 @@
-import { Button, Col, Container, Offcanvas, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import ErrorTypeChart from "./charts/ErrorTypeChart";
 
 
-import { useState } from "react";
+// import { useState } from "react";
 import DateSelector from "./DateSelector";
 import DropDown from "./dropdown/DropDown";
 import ErrorCodeDropdown from "./dropdown/multiselect/ErrorCodeDropdown";
+import SidebarDashboard from "./sidebar/SideBarDashboard";
+import ErrorLineChart from "./charts/lineChart/ErrorLineChart";
 
 // import { useEffect } from "react";
 // import { useLocation } from "react-router-dom";
 
 const Dashboard = () => {
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // const handleClose = () => setShow(false);
+  // const handleShow = () => setShow(true);
   // console.log(dateRange.start, dateRange.end)
   
 
@@ -39,30 +41,28 @@ const Dashboard = () => {
   return (
     <Container fluid>
       <Row className="vh-100">
-        <Col md={1} className="bg-info-subtle p-0">
-          <Button variant="primary" onClick={handleShow}>
-            Launch
-          </Button>
-        </Col>
-        <Offcanvas show={show} onHide={handleClose} scroll="true">
-          <Offcanvas.Header closeButton>
-            <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-          </Offcanvas.Header>
-          <Offcanvas.Body>
-            Some text as placeholder. In real life you can have the elements you
-            have chosen. Like, text, images, lists, etc.
-          </Offcanvas.Body>
-        </Offcanvas>
-        <Col className="bg-warning-subtle">
+
+        <SidebarDashboard/>
+          
+
+        <Col className="  ">
           <Row>
             <Row className="d-flex justify-content-around">
-              <DropDown></DropDown>
-              <ErrorCodeDropdown/>
+
+              <DropDown/>
+
+              <ErrorCodeDropdown />
+              
               <DateSelector />
+
             </Row>
             <Row>
               <Col>
-                <ErrorTypeChart/>
+                
+                <ErrorTypeChart />
+              </Col>  
+              <Col>
+                <ErrorLineChart/>
               </Col>
             </Row>
           </Row>
