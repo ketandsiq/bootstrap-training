@@ -1,5 +1,6 @@
 // import * as React from "react";
-import ProcessedData from "../../ProcessedData";
+import { useSelector } from "react-redux";
+
 import {
   Chart,
   ChartTitle,
@@ -8,35 +9,40 @@ import {
   ChartCategoryAxis,
   ChartCategoryAxisItem,
   ChartLegend,
+  ChartTooltip,
 } from "@progress/kendo-react-charts";
 
-const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"];
 
 const ErrorLineChart = () => {
-  const dateRange = ProcessedData();
-  console.log(dateRange);
-  
+  const dateRange = useSelector(state => state.user.lineChart);
+  const lineDataArray = dateRange.processedData.map(item => item.line_data);
+  const errorTypeArray = dateRange.processedData.map(item => item.error_type);
 
-  
   return (
-
-  <Chart className="m-5 ">
-    <ChartTitle text="Units sold" />
-    <ChartLegend position="right" orientation="vertical" />
-    <ChartCategoryAxis>
-      <ChartCategoryAxisItem
-        title={{ text: "Months" }}
-        categories={categories}
-      />
-    </ChartCategoryAxis>
-    <ChartSeries>
-      <ChartSeriesItem type="line" data={[123, 276, 310, 212, 240, 156, 98]} />
-      <ChartSeriesItem type="line" data={[165, 210, 287, 144, 190, 167, 212]} />
-      <ChartSeriesItem type="line" data={[56, 140, 195, 46, 123, 78, 95]} />
-    </ChartSeries>
-  </Chart>
-
-  )
+    <Chart className="m-5">
+      <ChartTooltip />
+      <ChartTitle text="Error By Dates" />
+      <ChartLegend position="top" orientation="horizontal" />
+      <ChartCategoryAxis>
+        <ChartCategoryAxisItem
+          title={{ text: "Dates" }}
+          categories={lineDataArray[0]?.dates || []} // Handle possible undefined values
+        />
+      </ChartCategoryAxis>
+      <ChartSeries>
+        {
+          lineDataArray.map((element, index) => (
+            <ChartSeriesItem 
+              key={index}
+              type="line" 
+              data={element.count_per_date} 
+              name={errorTypeArray[index]} // Assigning a label to each series
+            />
+          ))
+        }
+      </ChartSeries>
+    </Chart>
+  );
 };
 
 export default ErrorLineChart;

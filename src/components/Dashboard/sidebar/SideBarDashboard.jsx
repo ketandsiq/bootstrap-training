@@ -11,13 +11,15 @@ export default function SidebarDashboard() {
           backgroundColor: "rgba(238, 238, 238)",
           padding: "1rem",
           //   margin: "1rem 0",
-          borderRadius: "0.65rem",
+          height: "100%",
           width: isCollapsed ? "3.7rem" : "20rem",
           fontWeight: "bold",
           display: "flex",
           flexDirection: "column",
           gap: "3rem",
           overflow: "hidden",
+          position: "fixed",
+          zIndex: "1000",
         }}
       >
         <div

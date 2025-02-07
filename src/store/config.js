@@ -4,6 +4,7 @@ import formSlice from "./reducer/formSlice";
 import categoryReducer from "./reducer/categorySlice";
 import errorCodeReducer from "./reducer/errorCodeSlice"
 import dateRangeReducer from "./reducer/dateRangeSlice"
+import lineChartReducer from "./reducer/lineChartSlice"
 import {
   persistStore,
   persistReducer,
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
   form: formSlice,
   multiSelect: categoryReducer,
   multiSelectErrors: errorCodeReducer,
-  dateRange: dateRangeReducer
+  dateRange: dateRangeReducer,
+  lineChart: lineChartReducer,
 });
 
 const persistedUserReducer = persistReducer(persistConfig, rootReducer);

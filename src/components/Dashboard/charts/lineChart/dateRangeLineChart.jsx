@@ -20,17 +20,23 @@ const DateRangeLineChart = () => {
 
     const points = [];
     let current = new Date(startDate); // Avoid mutation
-    // console.log(current);
 
     while (current <= endDate) {
-      points.push(current);
+      points.push(new Date(current)); // Push a new Date instance
       current = new Date(current); // Clone date before modifying
       current.setDate(current.getDate() + step);
     }
 
+    // Check if the last point is equal to the end date; if not, append endDate
+    if (points.length > 0) {
+      const lastPoint = points[points.length - 1];
+      if (lastPoint.getTime() !== endDate.getTime()) {
+        points.push(endDate);
+      }
+    }
+
     return [{ step, dates: points }];
   }, [start, end]); // Memoized to run only when start/end changes
-//   console.log(breakpoints);
 
   return breakpoints;
 };
