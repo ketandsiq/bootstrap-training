@@ -25,12 +25,13 @@ const ProcessDataLineChart = () => {
 
   // 2. Get the sparse breakpoint dates from DateRangeLineChart and format them.
   const dateRange = DateRangeLineChart();
-  const breakpoints = dateRange[0].dates.map((date) => {
+
+  const breakpoints = dateRange.length>0 ? dateRange[0].dates.map((date) => {
     const d = new Date(date);
     return `${d.getFullYear()}-${(d.getMonth() + 1)
       .toString()
       .padStart(2, "0")}-${d.getDate().toString().padStart(2, "0")}`;
-  });
+  }) : [];
   // For example, breakpoints might be: ["2025-02-01", "2025-02-03", "2025-02-05"]
 
   // 3. Get the selected error subcategories from Redux.
