@@ -7,9 +7,6 @@ import {
 } from "@progress/kendo-react-grid";
 import { ProgressBar } from "@progress/kendo-react-progressbars";
 import { Rating } from "@progress/kendo-react-inputs";
-import { ExcelExport } from "@progress/kendo-react-excel-export";
-import { GridPDFExport } from "@progress/kendo-react-pdf";
-
 
 export const BadgeCell = (props) => {
   const { dataItem } = props;

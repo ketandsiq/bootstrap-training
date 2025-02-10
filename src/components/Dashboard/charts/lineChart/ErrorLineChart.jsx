@@ -1,4 +1,3 @@
-// import * as React from "react";
 import { useSelector } from "react-redux";
 
 import {
@@ -26,7 +25,7 @@ const ErrorLineChart = () => {
       <ChartCategoryAxis>
         <ChartCategoryAxisItem
           title={{ text: "Dates" }}
-          categories={lineDataArray[0]?.dates || []} // Handle possible undefined values
+          categories={lineDataArray[0]?.dates || []} 
         />
       </ChartCategoryAxis>
       <ChartSeries>
@@ -36,7 +35,7 @@ const ErrorLineChart = () => {
               key={index}
               type="line" 
               data={element.count_per_date} 
-              name={errorTypeArray[index]} // Assigning a label to each series
+              name={errorTypeArray[index]}
             />
           ))
         }
